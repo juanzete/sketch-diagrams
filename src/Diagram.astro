@@ -84,8 +84,9 @@ function exit(b: Box, to: { x: number; y: number }) {
 const boxes = sized.map((b) => {
   const kind = b.kind ?? 'default';
   const hatch = kind === 'accent' || kind === 'warm';
-  const d = gen.rectangle(b.x, b.y, b.w, b.h, opts({ stroke: '#000', fill: hatch ? '#000' : 'none', fillStyle: 'hachure', hachureAngle: -41, hachureGap: 10, fillWeight: 0.5, strokeLineDash: kind === 'muted' ? [6, 5] : undefined }));
-  const paths = gen.toPaths(d).map((p) => ({ d: p.d, hatch: p.fill !== 'none' && p.fill !== undefined && p.strokeWidth < 1.4 ? true : p.fill !== 'none' && p.fill !== undefined }));
+  const d = gen.rectangle(b.x, b.y, b.w, b.h, opts({ stroke: '#000', ...(hatch ? { fill: '#000', fillStyle: 'hachure', hachureAngle: -41, hachureGap: 10, fillWeight: 0.5 } : {}), strokeLineDash: kind === 'muted' ? [6, 5] : undefined }));
+  // rough emits the hachure as a separate path with strokeWidth = fillWeight; the outline keeps strokeWidth 1.4
+  const paths = gen.toPaths(d).map((p) => ({ d: p.d, hatch: p.strokeWidth < 1 }));
   return { ...b, kind, paths, ico: b.icon ? iconMarkup(b.icon) : '', dx: b.icon ? ICON_W / 2 : 0, plateW: b.textW + 12 };
 });
 const lines = edges.map((e) => {
