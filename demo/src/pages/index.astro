@@ -1,0 +1,101 @@
+---
+import Diagram from 'sketch-diagrams';
+import 'sketch-diagrams/styles.css';
+import 'sketch-diagrams/fonts.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sketch-diagrams</title>
+    <meta name="description" content="Hand-drawn architecture diagrams for Astro, rendered to SVG at build time." />
+    <style>
+      body { margin: 0; background: #040806; color: #cfe9d6; font-family: ui-monospace, Menlo, Consolas, monospace; }
+      main { max-width: 64rem; margin: 0 auto; padding: 3rem 16px 5rem; }
+      h1 { font-family: "Excalifont", cursive; font-weight: 400; font-size: 2.4rem; margin: 0 0 0.4rem; color: #5cff8c; }
+      h2 { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #4f7a5b; margin: 3rem 0 0.5rem; }
+      p { color: #8fb89b; max-width: 60ch; line-height: 1.6; }
+      pre { background: #0a120d; border: 1px solid #163020; padding: 1rem; overflow-x: auto; font-size: 0.82rem; line-height: 1.55; color: #cfe9d6; }
+      a { color: #5cff8c; }
+      .light { --sd-bg: #fbf8f1; --sd-border: #ddd6c6; --sd-text: #1c1b18; --sd-sub: #8b877d; --sd-default: #5f5c55; --sd-accent: #1f6f43; --sd-warm: #b4452a; --sd-muted: #a8a397; --sd-line: #8b877d; --sd-label: #5f5c55; --sd-caption: #8b877d; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>sketch-diagrams</h1>
+      <p>Hand-drawn architecture diagrams for Astro. Strokes by rough.js, labels in Excalifont, icons from Lucide and Simple Icons, automatic grid layout, inline SVG at build time. No image files, no client JavaScript.</p>
+      <p><a href="https://github.com/juanzete/sketch-diagrams">github.com/juanzete/sketch-diagrams</a> · built for the figures on <a href="https://bitof.dev">bitof.dev</a></p>
+
+      <h2>Two clouds, no keys</h2>
+      <Diagram
+        title="Keyless trust between two clouds"
+        caption="Identity federation in both directions. Nothing in this picture is a file you could leak."
+        nodes={[
+          { id: 'ci', label: 'Build runner', sub: 'cloud A · builds images', col: 0, row: 0, kind: 'accent', icon: 'hammer' },
+          { id: 'sts', label: 'Token exchange', sub: 'cloud B · trusts A', col: 1, row: 0, icon: 'key-round' },
+          { id: 'reg2', label: 'Registry B', sub: 'cloud B · images', col: 2, row: 0, kind: 'warm', icon: 'package' },
+          { id: 'reg1', label: 'Registry A', sub: 'cloud A · images', col: 0, row: 1, kind: 'accent', icon: 'package' },
+          { id: 'fed', label: 'Identity federation', sub: 'cloud A · trusts cluster', col: 1, row: 1, icon: 'shield-check' },
+          { id: 'k8s', label: 'Partner cluster', sub: 'cloud B · pulls images', col: 2, row: 1, kind: 'warm', icon: 'si:kubernetes' },
+        ]}
+        edges={[
+          { from: 'ci', to: 'sts', label: 'signed OIDC token' },
+          { from: 'sts', to: 'reg2', label: 'credentials · 1h' },
+          { from: 'k8s', to: 'fed', label: 'service-account token' },
+          { from: 'fed', to: 'reg1', label: 'access token' },
+        ]}
+      />
+      <pre><code>{`<Diagram title="Keyless trust between two clouds" caption="…"
+  nodes={[
+    { id: 'ci',  label: 'Build runner',   sub: 'cloud A · builds images', col: 0, row: 0, kind: 'accent', icon: 'hammer' },
+    { id: 'sts', label: 'Token exchange', sub: 'cloud B · trusts A',      col: 1, row: 0, icon: 'key-round' },
+    { id: 'k8s', label: 'Partner cluster', sub: 'cloud B · pulls images', col: 2, row: 1, kind: 'warm', icon: 'si:kubernetes' },
+    // …
+  ]}
+  edges={[{ from: 'ci', to: 'sts', label: 'signed OIDC token' }, /* … */]} />`}</code></pre>
+
+      <h2>Edge site</h2>
+      <Diagram
+        title="Hyperconverged edge site"
+        caption="Compute, storage and inference on the same nodes. The uplink carries events, not video."
+        seed={3}
+        nodes={[
+          { id: 'cams', label: 'Cameras', sub: '50 × RTSP', col: 0, row: 1, kind: 'muted', icon: 'camera' },
+          { id: 'vms', label: 'VMS', sub: 'ingest · playback', col: 1, row: 0, kind: 'accent', icon: 'video' },
+          { id: 'ai', label: 'Analytics', sub: 'GPU · events', col: 1, row: 2, kind: 'accent', icon: 'cpu' },
+          { id: 'minio', label: 'MinIO', sub: '4 nodes · EC:4', col: 2, row: 1, kind: 'warm', icon: 'si:minio' },
+          { id: 'hq', label: 'Central', sub: 'events · health', col: 3, row: 1, icon: 'radio-tower' },
+        ]}
+        edges={[
+          { from: 'cams', to: 'vms', label: 'streams' },
+          { from: 'vms', to: 'minio', label: 'S3 PUT · 1-min chunks' },
+          { from: 'ai', to: 'minio', label: 'S3 GET', dashed: true },
+          { from: 'vms', to: 'ai', label: 'frames' },
+          { from: 'minio', to: 'hq', label: 'metadata', dashed: true },
+        ]}
+      />
+
+      <h2>Themed with CSS variables</h2>
+      <div class="light">
+        <Diagram
+          title="Deploy, then ask"
+          caption="Same component, light theme: override the --sd-* variables on any ancestor."
+          seed={11}
+          nodes={[
+            { id: 'build', label: 'Build', sub: 'image tagged with sha', col: 0, row: 0, icon: 'hammer' },
+            { id: 'deploy', label: 'Deploy', sub: 'helm upgrade', col: 1, row: 0, icon: 'rocket' },
+            { id: 'probe', label: 'Probe', sub: 'GET /healthz', col: 2, row: 0, kind: 'accent', icon: 'stethoscope' },
+            { id: 'live', label: 'Live system', sub: 'what users reach', col: 2, row: 1, kind: 'warm', icon: 'globe' },
+            { id: 'gate', label: 'Compare', sub: 'live == sha ?', col: 3, row: 0, kind: 'accent', icon: 'check-check' },
+          ]}
+          edges={[
+            { from: 'build', to: 'deploy', label: 'sha' },
+            { from: 'deploy', to: 'probe', label: 'then' },
+            { from: 'probe', to: 'live', label: 'same path as users', both: true },
+            { from: 'probe', to: 'gate', label: 'version' },
+          ]}
+        />
+      </div>
+    </main>
+  </body>
+</html>

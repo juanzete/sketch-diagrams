@@ -1,0 +1,20 @@
+{
+  "name": "sketch-diagrams",
+  "version": "0.1.0",
+  "description": "Hand-drawn architecture diagrams for Astro: rough.js strokes, Excalifont labels, Lucide and Simple Icons, automatic grid layout, rendered to inline SVG at build time.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Juan Tissera",
+  "repository": { "type": "git", "url": "https://github.com/juanzete/sketch-diagrams" },
+  "keywords": ["astro", "astro-component", "diagram", "architecture", "excalidraw", "rough.js", "svg"],
+  "files": ["src", "fonts", "README.md", "LICENSE"],
+  "exports": {
+    ".": "./src/Diagram.astro",
+    "./styles.css": "./src/styles.css",
+    "./fonts.css": "./fonts/fonts.css",
+    "./fonts/*": "./fonts/*"
+  },
+  "peerDependencies": { "astro": ">=5.0.0" },
+  "dependencies": { "lucide": "^0.500.0", "roughjs": "^4.6.6", "simple-icons": "^15.0.0" },
+  "scripts": { "demo": "npm --prefix demo run dev", "build:demo": "npm --prefix demo run build" }
+}

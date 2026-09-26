@@ -1,0 +1,41 @@
+/* sketch-diagrams — default theme. Override the variables on any ancestor to restyle. */
+:root {
+  --sd-bg: #0a120d;
+  --sd-border: #163020;
+  --sd-grid: rgba(92, 255, 140, 0.06);
+  --sd-text: #cfe9d6;
+  --sd-sub: #4f7a5b;
+  --sd-default: #8fb89b;
+  --sd-accent: #5cff8c;
+  --sd-warm: #ffb454;
+  --sd-muted: #4f7a5b;
+  --sd-line: #4f7a5b;
+  --sd-label: #8fb89b;
+  --sd-caption: #4f7a5b;
+  --sd-caption-mark: #ffb454;
+  --sd-font-hand: "Excalifont", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  --sd-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.sd { margin: 2rem 0; }
+.sd-svg { width: 100%; height: auto; display: block; border: 1px solid var(--sd-border); background: var(--sd-bg); }
+.sd-node .sd-outline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.sd-node .sd-hatch { fill: none; opacity: 0.13; }
+.sd-node.default .sd-outline { stroke: var(--sd-default); }
+.sd-node.accent .sd-outline, .sd-node.accent .sd-hatch { stroke: var(--sd-accent); }
+.sd-node.warm .sd-outline, .sd-node.warm .sd-hatch { stroke: var(--sd-warm); }
+.sd-node.muted .sd-outline { stroke: var(--sd-muted); }
+.sd-text { font-family: var(--sd-font-hand); font-size: 17px; fill: var(--sd-text); }
+.sd-node.accent .sd-text { fill: var(--sd-accent); }
+.sd-node.warm .sd-text { fill: var(--sd-warm); }
+.sd-node.muted .sd-text { fill: var(--sd-muted); }
+.sd-sub { font-family: var(--sd-font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--sd-sub); }
+.sd-plate { fill: var(--sd-bg); opacity: 0.85; }
+.sd-ico { color: var(--sd-default); }
+.sd-node.accent .sd-ico { color: var(--sd-accent); }
+.sd-node.warm .sd-ico { color: var(--sd-warm); }
+.sd-node.muted .sd-ico { color: var(--sd-muted); }
+.sd-edge path { stroke: var(--sd-line); fill: none; stroke-linecap: round; }
+.sd-label { font-family: var(--sd-font-hand); font-size: 14px; fill: var(--sd-label); }
+.sd-label-bg { fill: var(--sd-bg); }
+.sd figcaption { margin-top: 0.7rem; font-family: var(--sd-font-mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--sd-caption); }
+.sd figcaption::before { content: "fig · "; color: var(--sd-caption-mark); }
